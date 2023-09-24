@@ -11,6 +11,9 @@ export class Account {
   @Column('tinyint', { name: 'is_activated', width: 1, default: () => "'0'" })
   isActivated: boolean;
 
+  @Column('varchar', { name: 'email', nullable: true, length: 255 })
+  email: string | null;
+
   @Column('varchar', { name: 'status', nullable: true, length: 20 })
   status: string | null;
 
