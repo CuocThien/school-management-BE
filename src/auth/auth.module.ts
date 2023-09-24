@@ -9,18 +9,28 @@ import {
   LoginService,
   LogoutService,
   RegisterAccountService,
+  RenewAccessTokenService,
   SendEmailVerifyService,
   SendOtpLoginService,
   SendOtpVerifyService,
   SendSettingPasswordService,
   SetPasswordService,
   UpdateProfileService,
+  ValidateTokenService,
   VerifyAccountService,
   VerifyPhoneService,
 } from './services';
 import { AuthController } from './auth.controller';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import {
+  JwtAccessTokenStrategy,
+  JwtRefreshTokenStrategy,
+  LocalStrategy,
+} from 'libs/middleware';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
+  imports: [JwtModule.register({})],
   providers: [
     AuthService,
     AddFcmTokenService,
@@ -39,6 +49,13 @@ import { AuthController } from './auth.controller';
     UpdateProfileService,
     VerifyAccountService,
     VerifyPhoneService,
+    JwtService,
+    LocalStrategy,
+    ConfigService,
+    JwtAccessTokenStrategy,
+    JwtRefreshTokenStrategy,
+    ValidateTokenService,
+    RenewAccessTokenService,
   ],
   controllers: [AuthController],
 })

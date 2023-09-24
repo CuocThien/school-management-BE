@@ -9,8 +9,4 @@ export class LoginBodyDTO {
   @ApiProperty({ example: 'password@!123', required: true })
   @IsString()
   password: string;
-
-  @ApiProperty({ example: 'WEB', enum: ['WEB', 'APP'], required: true })
-  @IsEnum(['WEB', 'APP'])
-  type: string;
 }

@@ -11,7 +11,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(req: Request): Promise<any> {
     const payload: any = req.body;
-    const { username, password, type } = payload || {};
-    return await this.loginService.login({ username, password, type });
+    const { username, password } = payload || {};
+    return await this.loginService.login({ username, password });
   }
 }

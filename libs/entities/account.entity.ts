@@ -23,7 +23,7 @@ export class Account {
   @Column('varchar', { name: 'password_salt', nullable: true, length: 255 })
   passwordSalt: string | null;
 
-  @Column('int', { name: 'organization_id' })
+  @Column('int', { name: 'organization_id', nullable: true })
   organizationId: number;
 
   @Column('int', { name: 'role_id', nullable: true })

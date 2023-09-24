@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt-config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { Account, Profile } from 'libs/entities';
 
 @Module({
   imports: [
@@ -16,17 +17,18 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
       envFilePath: ['.env'],
     }),
+    TypeOrmModule.forFeature([Profile, Account]),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT),
+      port: parseInt(process.env.DATABASE_PORT) || 3306,
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      // entities: '../libs/entities/index.ts',
+      entities: ['dist/**/**/**.entity{.ts,.js}'],
       synchronize: false,
     }),
-    TypeOrmModule.forFeature([]),
+
     JwtModule.registerAsync({
       useClass: JwtConfigService,
     }),
