@@ -1,4 +1,20 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "project": {
+    "@libs": {
+      "type": "library",
+      "root": "libs",
+      "entryFile": "index",
+      "sourceRoot": "libs",
+      "compilerOptions": {}
+    },
+    "@type": {
+      "type": "library",
+      "root": "types",
+      "entryFile": "index",
+      "sourceRoot": "types",
+      "compilerOptions": {}
+    }
+  }
 }

@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt-config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     JwtModule.registerAsync({
       useClass: JwtConfigService,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
