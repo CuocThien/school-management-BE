@@ -10,6 +10,7 @@ import { JwtConfigService } from './config/jwt-config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { Account, Profile } from 'libs/entities';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { Account, Profile } from 'libs/entities';
       useClass: JwtConfigService,
     }),
     AuthModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [
