@@ -1,8 +1,21 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'libs/middleware';
 import { HttpAccountId } from 'libs/utils';
-import { CreateNoficationService, UpdateNoficationService } from './services';
+import {
+  CreateNoficationService,
+  GetNotificationsService,
+  UpdateNoficationService,
+} from './services';
 import {
   CreateNotificationBodyDTO,
   NotificationParamDTO,
@@ -16,6 +29,7 @@ export class NotificationController {
   constructor(
     private readonly createNotificationService: CreateNoficationService,
     private readonly updateNoficationService: UpdateNoficationService,
+    private readonly getNotificationsService: GetNotificationsService,
   ) {}
   @Post('notification')
   createNotification(
@@ -36,5 +50,10 @@ export class NotificationController {
       body,
       accountId,
     );
+  }
+
+  @Get('notifications')
+  getNotifications(@Query() query) {
+    return this.getNotificationsService.getNotifications(query);
   }
 }

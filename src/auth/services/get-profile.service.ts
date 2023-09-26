@@ -14,9 +14,23 @@ export class GetProfileService {
     if (isEmpty(account)) {
       return response(404, 'ACCOUNT_NOT_FOUND');
     }
+    const systemPermissions = ['CRM'];
+    const permissions = [
+      'F_DASHBOARD',
+      'F_MEMBER',
+      'F_STAFF',
+      'F_STORE',
+      'F_ORDER',
+      'F_SALE',
+      'F_MARKETING',
+      'F_REPORT',
+      'F_SETTING',
+    ];
     return response(200, 'SUCCESSFULLY', {
       ...profile,
       email: account?.email || null,
+      permissions,
+      systemPermissions,
     });
   }
 }
