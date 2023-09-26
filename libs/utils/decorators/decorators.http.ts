@@ -8,6 +8,13 @@ export const HttpAccountId = createParamDecorator(
   },
 );
 
+export const HttpAccountType = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user.data.accountType;
+  },
+);
+
 export const HttpReqUserId = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();

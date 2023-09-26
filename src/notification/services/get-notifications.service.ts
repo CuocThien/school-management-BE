@@ -1,22 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { Notification, Profile } from 'libs/entities';
-import { response } from 'libs/utils';
-import { getRepository } from 'typeorm';
+import { getQueryPaging, response } from 'libs/utils';
+import { In, getRepository } from 'typeorm';
 import { map, keyBy } from 'lodash';
 
 @Injectable()
 export class GetNotificationsService {
-  public async getNotifications(query) {
-    const { page = 0, limit = 20, orderType = 'DESC' } = query;
+  public async getNotifications(query, accountType) {
+    const { orderType = 'DESC' } = query;
+    const [skip, take] = getQueryPaging(query);
+    const conditions = { isDeleted: false };
+    if (['STUDENT', 'TEACHER'].includes(accountType)) {
+      Object.assign(conditions, {
+        targetType: In(['ALL', accountType]),
+      });
+    }
     const [notifications, total] = await getRepository(
       Notification,
     ).findAndCount({
-      where: {
-        isDeleted: false,
-      },
+      where: conditions,
       order: { id: orderType },
-      take: limit,
-      skip: page,
+      take,
+      skip,
     });
     const accountIds = map(notifications, 'createdBy');
     const accounts = await getRepository(Profile).findByIds(accountIds);

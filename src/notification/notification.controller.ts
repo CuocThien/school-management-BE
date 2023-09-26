@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -10,9 +11,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'libs/middleware';
-import { HttpAccountId } from 'libs/utils';
+import { HttpAccountId, HttpAccountType } from 'libs/utils';
 import {
   CreateNoficationService,
+  DeleteNoficationService,
   GetNotificationsService,
   UpdateNoficationService,
 } from './services';
@@ -30,6 +32,7 @@ export class NotificationController {
     private readonly createNotificationService: CreateNoficationService,
     private readonly updateNoficationService: UpdateNoficationService,
     private readonly getNotificationsService: GetNotificationsService,
+    private readonly deleteNoficationService: DeleteNoficationService,
   ) {}
   @Post('notification')
   createNotification(
@@ -53,7 +56,12 @@ export class NotificationController {
   }
 
   @Get('notifications')
-  getNotifications(@Query() query) {
-    return this.getNotificationsService.getNotifications(query);
+  getNotifications(@Query() query, @HttpAccountType() accountType) {
+    return this.getNotificationsService.getNotifications(query, accountType);
+  }
+
+  @Delete('notification/:id')
+  deleteNotification(@Param() { id }, @HttpAccountId() accountId) {
+    return this.deleteNoficationService.deleteNotification(id, accountId);
   }
 }

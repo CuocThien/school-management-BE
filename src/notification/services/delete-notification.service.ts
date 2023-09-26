@@ -5,21 +5,21 @@ import { response } from 'libs/utils';
 import { getRepository } from 'typeorm';
 
 @Injectable()
-export class UpdateNoficationService {
-  public async updateNotification(notificationId: number, body, reqUserId) {
+export class DeleteNoficationService {
+  public async deleteNotification(notificationId: number, reqUserId) {
     const notification = await getRepository(Notification).findOne({
       id: notificationId,
       isDeleted: false,
     });
     if (isEmpty(notification)) return response(404, 'DATA_NOT_FOUND');
-    await getRepository(Notification).save({
-      ...notification,
-      title: body.title,
-      description: body.description,
-      targetType: body.targetType,
-      updatedAt: new Date(),
-      updatedBy: reqUserId,
-    });
-    return response(200, 'SUCCESSFULLY', Object.assign(notification, body));
+    await getRepository(Notification).update(
+      { id: notification.id },
+      {
+        isDeleted: true,
+        deletedAt: new Date(),
+        deletedBy: reqUserId,
+      },
+    );
+    return response(200, 'SUCCESSFULLY');
   }
 }

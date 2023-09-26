@@ -28,6 +28,7 @@ export class GetProfileService {
     ];
     return response(200, 'SUCCESSFULLY', {
       ...profile,
+      ...account,
       email: account?.email || null,
       permissions,
       systemPermissions,

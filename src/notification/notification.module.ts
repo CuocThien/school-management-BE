@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { NotificationController } from './notification.controller';
 import {
   CreateNoficationService,
+  DeleteNoficationService,
   GetNotificationsService,
   UpdateNoficationService,
 } from './services';
@@ -12,6 +13,7 @@ import {
     CreateNoficationService,
     UpdateNoficationService,
     GetNotificationsService,
+    DeleteNoficationService,
   ],
 })
 export class NotificationModule {}

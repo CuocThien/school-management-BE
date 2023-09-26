@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 
 export class CreateNotificationBodyDTO {
   @ApiProperty({ example: 'Thông bao...', required: true })
@@ -10,7 +10,11 @@ export class CreateNotificationBodyDTO {
   @IsString()
   description: string;
 
-  @ApiProperty({ example: 1, required: true })
-  @IsNumber()
-  targetType: number;
+  @ApiProperty({
+    example: 'ALL',
+    enum: ['ALL', 'STUDENT', 'TEACHER'],
+    required: true,
+  })
+  @IsEnum(['ALL', 'STUDENT', 'TEACHER'])
+  targetType: string;
 }
