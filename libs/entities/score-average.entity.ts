@@ -34,4 +34,7 @@ export class ScoreAverage {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
+
+  @Column('text', { name: 'review', nullable: true })
+  review: string | null;
 }

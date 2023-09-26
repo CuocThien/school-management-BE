@@ -37,4 +37,68 @@ export class Score {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
+
+  @Column('decimal', {
+    name: 'mini_test_1_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  miniTest1Score: string | null;
+
+  @Column('decimal', {
+    name: 'mini_test_2_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  miniTest2Score: string | null;
+
+  @Column('decimal', {
+    name: 'mini_test_3_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  miniTest3Score: string | null;
+
+  @Column('decimal', {
+    name: 'midterm_test_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  midTermTestSscore: string | null;
+
+  @Column('decimal', {
+    name: 'endterm_test_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  endTermTestScore: string | null;
+
+  @Column('decimal', {
+    name: 'semeter_1_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  semeter1Score: string | null;
+
+  @Column('decimal', {
+    name: 'semeter_2_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  semeter2Score: string | null;
+
+  @Column('decimal', {
+    name: 'endyear_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  endYearScore: string | null;
 }
