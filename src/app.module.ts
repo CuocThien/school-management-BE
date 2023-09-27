@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { Account, Profile } from 'libs/entities';
 import { NotificationModule } from './notification/notification.module';
+import { ScoreModule } from './score/score.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { NotificationModule } from './notification/notification.module';
     }),
     AuthModule,
     NotificationModule,
+    ScoreModule,
   ],
   controllers: [AppController],
   providers: [

@@ -28,4 +28,7 @@ export class Subject {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
+
+  @Column('int', { name: 'grade_id', nullable: true })
+  grade_id: number | null;
 }

@@ -14,12 +14,6 @@ export class Score {
   @Column('int', { name: 'subject_id', nullable: true })
   subjectId: number | null;
 
-  @Column('int', { name: 'score', nullable: true })
-  score: number | null;
-
-  @Column('int', { name: 'score_type_id', nullable: true })
-  scoreTypeId: number | null;
-
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
 
@@ -77,28 +71,4 @@ export class Score {
     scale: 1,
   })
   endTermTestScore: string | null;
-
-  @Column('decimal', {
-    name: 'semeter_1_score',
-    nullable: true,
-    precision: 19,
-    scale: 1,
-  })
-  semeter1Score: string | null;
-
-  @Column('decimal', {
-    name: 'semeter_2_score',
-    nullable: true,
-    precision: 19,
-    scale: 1,
-  })
-  semeter2Score: string | null;
-
-  @Column('decimal', {
-    name: 'endyear_score',
-    nullable: true,
-    precision: 19,
-    scale: 1,
-  })
-  endYearScore: string | null;
 }
