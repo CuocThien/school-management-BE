@@ -7,12 +7,13 @@ import { map, keyBy } from 'lodash';
 @Injectable()
 export class GetNotificationsService {
   public async getNotifications(query, accountType) {
+    const mergeType = accountType == 'FORM_TEACHER' ? 'TEACHER' : accountType;
     const { orderType = 'DESC' } = query;
     const [skip, take] = getQueryPaging(query);
     const conditions = { isDeleted: false };
-    if (['STUDENT', 'TEACHER'].includes(accountType)) {
+    if (['STUDENT', 'TEACHER'].includes(mergeType)) {
       Object.assign(conditions, {
-        targetType: In(['ALL', accountType]),
+        targetType: In(['ALL', mergeType]),
       });
     }
     const [notifications, total] = await getRepository(

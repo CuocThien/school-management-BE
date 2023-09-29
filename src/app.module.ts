@@ -12,6 +12,9 @@ import { AuthModule } from './auth/auth.module';
 import { Account, Profile } from 'libs/entities';
 import { NotificationModule } from './notification/notification.module';
 import { ScoreModule } from './score/score.module';
+import { GradeModule } from './grade/grade.module';
+import { ClassModule } from './class/class.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { ScoreModule } from './score/score.module';
     AuthModule,
     NotificationModule,
     ScoreModule,
+    GradeModule,
+    ClassModule,
+    StudentModule,
   ],
   controllers: [AppController],
   providers: [
