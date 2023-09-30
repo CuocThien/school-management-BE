@@ -46,4 +46,22 @@ export class Profile {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
+
+  @Column('text', { name: 'birthplace', nullable: true })
+  birthplace: string | null;
+
+  @Column('text', { name: 'address', nullable: true })
+  address: string | null;
+
+  @Column('text', { name: 'religion', nullable: true })
+  religion: string | null;
+
+  @Column('text', { name: 'identity_number', nullable: true })
+  identityNumber: string | null;
+
+  @Column('datetime', { name: 'join_c_y_u_at', nullable: true })
+  joinCYUAt: Date | null;
+
+  @Column('datetime', { name: 'join_c_p_at', nullable: true })
+  joinCPAt: Date | null;
 }
