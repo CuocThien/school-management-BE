@@ -53,6 +53,7 @@ export class GetStudentsService {
     const result = raws.map((raw) => {
       const teacherId = raw['c_teacher_id'];
       const teacher = teachers[teacherId] || {};
+      const gender = raw['p_gender'] ? 'Nam' : 'Nữ';
       return {
         id: raw['a_id'],
         email: raw['a_email'],
@@ -62,6 +63,7 @@ export class GetStudentsService {
         fullName: raw['p_full_name'],
         birthday: raw['p_birthday'],
         phone: raw['p_phone'],
+        gender,
         parentId: raw['p_parent_id'],
         avatar: raw['p_avatar'],
         classId: raw['c_id'],

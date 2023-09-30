@@ -8,6 +8,9 @@ export class Profile {
   @Column('tinyint', { name: 'is_deleted', width: 1, default: () => "'0'" })
   isDeleted: boolean;
 
+  @Column('tinyint', { name: 'gender', width: 1, default: () => "'1'" })
+  gender: boolean;
+
   @Column('int', { name: 'account_id', nullable: true })
   accountId: number | null;
 

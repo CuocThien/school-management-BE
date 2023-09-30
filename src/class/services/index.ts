@@ -1,1 +1,1 @@
-export * from './get-class.service';
+export * from './get-classes.service';
