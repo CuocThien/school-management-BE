@@ -14,7 +14,12 @@ export class ScoreAverage {
   @Column('int', { name: 'class_subject_id', nullable: true })
   classSubjectId: number | null;
 
-  @Column('int', { name: 'score', nullable: true })
+  @Column('decimal', {
+    name: 'score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
   score: number | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
@@ -34,7 +39,4 @@ export class ScoreAverage {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
-
-  @Column('text', { name: 'review', nullable: true })
-  review: string | null;
 }

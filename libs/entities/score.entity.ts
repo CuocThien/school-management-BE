@@ -62,7 +62,7 @@ export class Score {
     precision: 19,
     scale: 1,
   })
-  midTermTestSscore: string | null;
+  midtermTestScore: string | null;
 
   @Column('decimal', {
     name: 'endterm_test_score',
@@ -70,5 +70,8 @@ export class Score {
     precision: 19,
     scale: 1,
   })
-  endTermTestScore: string | null;
+  endtermTestScore: string | null;
+
+  @Column('text', { name: 'review', nullable: true })
+  review: string | null;
 }

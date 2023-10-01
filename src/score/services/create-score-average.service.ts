@@ -1,11 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import {
-  Account,
-  Class,
-  ClassSubject,
-  Score,
-  ScoreAverage,
-} from 'libs/entities';
+import { Account, ClassSubject, ScoreAverage } from 'libs/entities';
 import { response } from 'libs/utils';
 import { getRepository } from 'typeorm';
 import { isEmpty } from 'lodash';
@@ -26,12 +20,28 @@ export class CreateScoreAverageService {
     ]);
     if (isEmpty(student) || isEmpty(classSubject))
       return response(404, 'DATA_NOT_FOUND');
+    const existedScoreAvg = await getRepository(ScoreAverage).findOne({
+      studentId,
+      classSubjectId,
+      isDeleted: false,
+    });
+    const body = {};
+    if (isEmpty(existedScoreAvg)) {
+      Object.assign(body, {
+        createdAt: new Date(),
+        createdBy: accountId,
+      });
+    } else {
+      Object.assign(body, existedScoreAvg, {
+        updatedAt: new Date(),
+        updatedBy: accountId,
+      });
+    }
     const scoreAverage = await getRepository(ScoreAverage).save({
+      ...body,
       studentId,
       classSubjectId,
       score,
-      createdAt: new Date(),
-      createdBy: accountId,
     });
     return response(200, 'SUCCESSFULLY', scoreAverage);
   }

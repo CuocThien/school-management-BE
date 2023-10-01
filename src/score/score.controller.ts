@@ -61,15 +61,11 @@ export class ScoreController {
     });
   }
 
-  @Post('score-average/:studentId')
+  @Post('score-average')
   createScoreAverage(
     @Body() body: CreateScoreAverageBodyDTO,
     @HttpAccountId() accountId,
-    @Param() { studentId },
   ) {
-    return this.createScoreAverageService.createScoreAverage(
-      { studentId, ...body },
-      accountId,
-    );
+    return this.createScoreAverageService.createScoreAverage(body, accountId);
   }
 }

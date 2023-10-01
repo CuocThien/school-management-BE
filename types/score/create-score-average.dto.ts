@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class CreateScoreAverageBodyDTO {
   @ApiProperty({ example: 8.5, required: true })
@@ -9,4 +9,8 @@ export class CreateScoreAverageBodyDTO {
   @ApiProperty({ example: 1, required: true })
   @IsNumber()
   classSubjectId: number;
+
+  @ApiProperty({ example: 1, required: true })
+  @IsNumber()
+  studentId: number;
 }
