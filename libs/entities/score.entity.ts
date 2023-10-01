@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('score', { schema: 'begt5lzy8mrphehk6xkk' })
+@Entity('score', { schema: 'sql12650018' })
 export class Score {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
@@ -11,8 +11,8 @@ export class Score {
   @Column('int', { name: 'student_id', nullable: true })
   studentId: number | null;
 
-  @Column('int', { name: 'subject_id', nullable: true })
-  subjectId: number | null;
+  @Column('int', { name: 'class_subject_id', nullable: true })
+  classSubjectId: number | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

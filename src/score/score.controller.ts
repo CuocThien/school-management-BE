@@ -1,9 +1,27 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAccessTokenGuard } from 'libs/middleware';
-import { CreateScoreService, UpdateScoreService } from './services';
+import {
+  CreateScoreService,
+  GetScoresByClassAndSubjectService,
+  UpdateScoreService,
+} from './services';
 import { HttpAccountId } from 'libs/utils';
-import { CreateScoreBodyDTO, ScoreParamDTO } from 'types/score';
+import {
+  CreateScoreBodyDTO,
+  GetScoresByClassQueryDTO,
+  ScoreParamDTO,
+  ScoresParamDTO,
+} from 'types/score';
 
 @Controller('')
 @ApiBearerAuth()
@@ -13,6 +31,7 @@ export class ScoreController {
   constructor(
     private readonly createScoreService: CreateScoreService,
     private readonly updateScoreService: UpdateScoreService,
+    private readonly getScoresByClassAndSubjectService: GetScoresByClassAndSubjectService,
   ) {}
   @Post('score')
   createScore(@Body() body: CreateScoreBodyDTO, @HttpAccountId() accountId) {
@@ -25,7 +44,17 @@ export class ScoreController {
     @Param() { scoreId }: ScoreParamDTO,
     @HttpAccountId() accountId,
   ) {
-    console.log(scoreId);
     return this.updateScoreService.updateScore(scoreId, body, accountId);
+  }
+
+  @Get('scores/:classId/:subjectId')
+  getScoresByClassAndSubject(
+    @Param() params: ScoresParamDTO,
+    @Query() query: GetScoresByClassQueryDTO,
+  ) {
+    return this.getScoresByClassAndSubjectService.getScoresByClassAndSubject({
+      ...params,
+      ...query,
+    });
   }
 }

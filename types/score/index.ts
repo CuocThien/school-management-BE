@@ -4,10 +4,23 @@ import { IsNumber } from 'class-validator';
 import { transformStringToNumber } from 'libs/utils';
 
 export * from './create-score.body.dto';
+export * from './get-scores-by-class.query.dto';
 
 export class ScoreParamDTO {
   @ApiProperty({ example: 1, required: true })
   @Transform(transformStringToNumber, { toClassOnly: true })
   @IsNumber()
   scoreId: number;
+}
+
+export class ScoresParamDTO {
+  @ApiProperty({ example: 1, required: true })
+  @Transform(transformStringToNumber, { toClassOnly: true })
+  @IsNumber()
+  classId: number;
+
+  @ApiProperty({ example: 1, required: true })
+  @Transform(transformStringToNumber, { toClassOnly: true })
+  @IsNumber()
+  subjectId: number;
 }

@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('test_schedule', { schema: 'begt5lzy8mrphehk6xkk' })
+@Entity('test_schedule', { schema: 'sql12650018' })
 export class TestSchedule {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

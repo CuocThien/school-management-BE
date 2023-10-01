@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ScoreController } from './score.controller';
-import { CreateScoreService, UpdateScoreService } from './services';
+import {
+  CreateScoreService,
+  UpdateScoreService,
+  GetScoresByClassAndSubjectService,
+} from './services';
 
 @Module({
   controllers: [ScoreController],
-  providers: [CreateScoreService, UpdateScoreService],
+  providers: [
+    CreateScoreService,
+    UpdateScoreService,
+    GetScoresByClassAndSubjectService,
+  ],
 })
 export class ScoreModule {}

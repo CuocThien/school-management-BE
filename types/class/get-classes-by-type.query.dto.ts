@@ -1,14 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNumber, IsString, ValidateIf } from 'class-validator';
+import { IsNumber, ValidateIf } from 'class-validator';
 import { ifExistedValue, transformStringToNumber } from 'libs/utils';
-import { PagingQueryDTO } from 'types/paging.query.dto';
 
-export class GetStudentsQueryDTO extends PagingQueryDTO {
+export class GetClassesByTypeQueryDTO {
   @ApiProperty({ example: null, required: false })
   @ValidateIf(ifExistedValue)
-  @IsString()
-  queryString: string;
+  @Transform(transformStringToNumber)
+  @IsNumber()
+  semesterId: number;
 
   @ApiProperty({ example: null, required: false })
   @ValidateIf(ifExistedValue)
@@ -20,11 +20,5 @@ export class GetStudentsQueryDTO extends PagingQueryDTO {
   @ValidateIf(ifExistedValue)
   @Transform(transformStringToNumber)
   @IsNumber()
-  classId: number;
-
-  @ApiProperty({ example: null, required: false })
-  @ValidateIf(ifExistedValue)
-  @Transform(transformStringToNumber)
-  @IsNumber()
-  gender: number;
+  subjectId: number;
 }

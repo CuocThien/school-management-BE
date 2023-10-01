@@ -15,6 +15,8 @@ import { ScoreModule } from './score/score.module';
 import { GradeModule } from './grade/grade.module';
 import { ClassModule } from './class/class.module';
 import { StudentModule } from './student/student.module';
+import { SubjectModule } from './subject/subject.module';
+import { SemesterModule } from './semester/semester.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { StudentModule } from './student/student.module';
     GradeModule,
     ClassModule,
     StudentModule,
+    SubjectModule,
+    SemesterModule,
   ],
   controllers: [AppController],
   providers: [

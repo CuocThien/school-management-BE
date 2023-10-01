@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { GradeController } from './grade.controller';
-import { GetGradesService } from './services';
+import {
+  GetGradesService,
+  GetGradesActiveByAccountTypeService,
+} from './services';
 
 @Module({
-  providers: [GetGradesService],
+  providers: [GetGradesService, GetGradesActiveByAccountTypeService],
   controllers: [GradeController],
 })
 export class GradeModule {}

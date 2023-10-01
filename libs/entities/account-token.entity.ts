@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Index('id', ['id'], { unique: true })
-@Entity('account_token', { schema: 'begt5lzy8mrphehk6xkk' })
+@Entity('account_token', { schema: 'sql12650018' })
 export class AccountToken {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;

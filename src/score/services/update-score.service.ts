@@ -7,8 +7,6 @@ import { getRepository } from 'typeorm';
 @Injectable()
 export class UpdateScoreService {
   public async updateScore(scoreId: number, body, requestId) {
-    console.log(scoreId);
-
     const score = await getRepository(Score).findOne({
       id: scoreId,
       isDeleted: false,

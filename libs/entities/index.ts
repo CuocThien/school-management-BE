@@ -18,3 +18,4 @@ export * from './semester.entity';
 export * from './subject-group.entity';
 export * from './subject.entity';
 export * from './test-schedule.entity';
+export * from './class-subject.entity';

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('schedule', { schema: 'sql12650018' })
-export class Schedule {
+@Entity('class_subject', { schema: 'sql12650018' })
+export class ClassSubject {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
@@ -16,24 +16,6 @@ export class Schedule {
 
   @Column('int', { name: 'teacher_id', nullable: true })
   teacherId: number | null;
-
-  @Column('int', { name: 'lesson_from', nullable: true })
-  lessonFrom: number | null;
-
-  @Column('int', { name: 'lesson_to', nullable: true })
-  lessonTo: number | null;
-
-  @Column('text', { name: 'day_of_week', nullable: true })
-  dayOfWeek: string | null;
-
-  @Column('tinyint', { name: 'is_active', width: 1, default: () => "'1'" })
-  isActive: boolean;
-
-  @Column('int', { name: 'score', nullable: true })
-  score: number | null;
-
-  @Column('int', { name: 'rank_id', nullable: true })
-  rankId: number | null;
 
   @Column('int', { name: 'semester_id', nullable: true })
   semesterId: number | null;
@@ -55,4 +37,7 @@ export class Schedule {
 
   @Column('int', { name: 'deleted_by', nullable: true })
   deletedBy: number | null;
+
+  @Column('int', { name: 'grade_id', nullable: true })
+  gradeId: number | null;
 }
