@@ -14,9 +14,11 @@ import {
   CreateScoreService,
   GetScoresByClassAndSubjectService,
   UpdateScoreService,
+  CreateScoreAverageService,
 } from './services';
 import { HttpAccountId } from 'libs/utils';
 import {
+  CreateScoreAverageBodyDTO,
   CreateScoreBodyDTO,
   GetScoresByClassQueryDTO,
   ScoreParamDTO,
@@ -32,6 +34,7 @@ export class ScoreController {
     private readonly createScoreService: CreateScoreService,
     private readonly updateScoreService: UpdateScoreService,
     private readonly getScoresByClassAndSubjectService: GetScoresByClassAndSubjectService,
+    private readonly createScoreAverageService: CreateScoreAverageService,
   ) {}
   @Post('score')
   createScore(@Body() body: CreateScoreBodyDTO, @HttpAccountId() accountId) {
@@ -56,5 +59,17 @@ export class ScoreController {
       ...params,
       ...query,
     });
+  }
+
+  @Post('score-average/:studentId')
+  createScoreAverage(
+    @Body() body: CreateScoreAverageBodyDTO,
+    @HttpAccountId() accountId,
+    @Param() { studentId },
+  ) {
+    return this.createScoreAverageService.createScoreAverage(
+      { studentId, ...body },
+      accountId,
+    );
   }
 }

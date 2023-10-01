@@ -5,6 +5,7 @@ import { transformStringToNumber } from 'libs/utils';
 
 export * from './create-score.body.dto';
 export * from './get-scores-by-class.query.dto';
+export * from './create-score-average.dto';
 
 export class ScoreParamDTO {
   @ApiProperty({ example: 1, required: true })
