@@ -1,21 +1,26 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('department_teacher', { schema: 'sql12650018' })
-export class DepartmentTeacher {
+@Entity('score_semester', { schema: 'sql12650018' })
+export class ScoreSemester {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @Column('tinyint', { name: 'is_deleted', width: 1, default: () => "'0'" })
   isDeleted: boolean;
 
-  @Column('tinyint', { name: 'is_chief', width: 1, default: () => "'0'" })
-  isChief: boolean;
+  @Column('int', { name: 'class_student_id', nullable: true })
+  classStudentId: number | null;
 
-  @Column('int', { name: 'department_id', nullable: true })
-  departmentId: number | null;
+  @Column('decimal', {
+    name: 'average_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  averageScore: number | null;
 
-  @Column('int', { name: 'teacher_id', nullable: true })
-  teacherId: number | null;
+  @Column('varchar', { name: 'rank', nullable: true })
+  rank: string | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

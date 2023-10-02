@@ -8,8 +8,11 @@ export class ScoreFinal {
   @Column('tinyint', { name: 'is_deleted', width: 1, default: () => "'0'" })
   isDeleted: boolean;
 
-  @Column('int', { name: 'student_id', nullable: true })
-  studentId: number | null;
+  @Column('int', { name: 'class_student_id', nullable: true })
+  classStudentId: number | null;
+
+  @Column('int', { name: 'year_id', nullable: true })
+  yearId: number | null;
 
   @Column('tinyint', { name: 'is_pass', width: 1, default: () => "'1'" })
   isPass: boolean;
@@ -17,8 +20,8 @@ export class ScoreFinal {
   @Column('int', { name: 'score', nullable: true })
   score: number | null;
 
-  @Column('int', { name: 'rank_id', nullable: true })
-  rankId: number | null;
+  @Column('varchar', { name: 'rank', nullable: true })
+  rank: string | null;
 
   @Column('int', { name: 'semester_id', nullable: true })
   semesterId: number | null;

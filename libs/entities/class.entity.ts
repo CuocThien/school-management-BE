@@ -14,9 +14,6 @@ export class Class {
   @Column('int', { name: 'grade_id', nullable: true })
   gradeId: number | null;
 
-  @Column('int', { name: 'teacher_id', nullable: true })
-  teacherId: number | null;
-
   @Column('int', { name: 'total_students', nullable: true })
   totalStudents: number | null;
 

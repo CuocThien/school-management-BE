@@ -1,21 +1,18 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('subject_group', { schema: 'sql12650018' })
-export class SubjectGroup {
+@Entity('year', { schema: 'sql12650018' })
+export class Year {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
   @Column('tinyint', { name: 'is_deleted', width: 1, default: () => "'0'" })
   isDeleted: boolean;
 
-  @Column('int', { name: 'subject_id', nullable: true })
-  subjectId: number | null;
-
-  @Column('int', { name: 'chief_id', nullable: true })
-  chiefId: number | null;
-
   @Column('text', { name: 'name', nullable: true })
   name: string | null;
+
+  @Column('tinyint', { name: 'is_active', width: 1 })
+  isActive: boolean;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

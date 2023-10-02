@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('schedule', { schema: 'sql12650018' })
-export class Schedule {
+@Entity('class_semester', { schema: 'sql12650018' })
+export class ClassSemester {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   id: number;
 
@@ -11,32 +11,20 @@ export class Schedule {
   @Column('int', { name: 'class_id', nullable: true })
   classId: number | null;
 
-  @Column('int', { name: 'subject_id', nullable: true })
-  subjectId: number | null;
+  @Column('int', { name: 'semester_id', nullable: true })
+  semesterId: number | null;
+
+  @Column('int', { name: 'year_id', nullable: true })
+  yearId: number | null;
 
   @Column('int', { name: 'teacher_id', nullable: true })
   teacherId: number | null;
 
-  @Column('int', { name: 'lesson_from', nullable: true })
-  lessonFrom: number | null;
-
-  @Column('int', { name: 'lesson_to', nullable: true })
-  lessonTo: number | null;
-
-  @Column('text', { name: 'day_of_week', nullable: true })
-  dayOfWeek: string | null;
-
-  @Column('tinyint', { name: 'is_active', width: 1, default: () => "'1'" })
+  @Column('tinyint', {
+    name: 'is_active',
+    width: 1,
+  })
   isActive: boolean;
-
-  @Column('int', { name: 'score', nullable: true })
-  score: number | null;
-
-  @Column('int', { name: 'rank_id', nullable: true })
-  rankId: number | null;
-
-  @Column('int', { name: 'semester_id', nullable: true })
-  semesterId: number | null;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;

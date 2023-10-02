@@ -15,11 +15,17 @@ export class ClassStudent {
   })
   isClassMonitor: boolean;
 
-  @Column('int', { name: 'class_id', nullable: true })
-  classId: number | null;
+  @Column('int', { name: 'class_semester_id', nullable: true })
+  classSemesterId: number | null;
 
   @Column('int', { name: 'student_id', nullable: true })
   studentId: number | null;
+
+  @Column('tinyint', {
+    name: 'is_active',
+    width: 1,
+  })
+  isActive: boolean;
 
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
