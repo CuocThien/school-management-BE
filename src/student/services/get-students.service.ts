@@ -1,42 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { Account, Class, ClassStudent, Grade, Profile } from 'libs/entities';
+import { Account, ClassStudent, Profile } from 'libs/entities';
 import { getQueryPaging, response } from 'libs/utils';
 import { In, getManager, getRepository } from 'typeorm';
 import { keyBy, map, isEmpty, isNil } from 'lodash';
+import { GetStudentsQueryDTO } from 'types';
+import { ClassSemester } from 'libs/entities/class-semester.entity';
 
 @Injectable()
 export class GetStudentsService {
-  private _getQueryStringByAdmin(data) {
-    const { classId, gradeId, gender, queryString } = data;
-    let where = 'a.isDeleted = :isDeleted AND a.accountType = :accountType';
-    const params: any = { isDeleted: false, accountType: 'STUDENT' };
-    if (!isNil(gender)) {
-      where += ' AND p.gender = :gender';
-      params['gender'] = gender;
-    }
-    if (!isEmpty(queryString)) {
-      where += ' AND p.fullName LIKE :queryString';
-      params['queryString'] = `%${queryString}%`;
-    }
-    if (!isNil(classId)) {
-      where += ' AND cs.classId = :classId';
-      params['classId'] = classId;
-    }
-    if (!isNil(gradeId)) {
-      where += ' AND c.gradeId = :gradeId';
-      params['gradeId'] = gradeId;
-    }
-    return { where, params };
-  }
-
-  private _getQueryStringByFormTeacher(data) {
-    const { gender, queryString, teacherId } = data;
+  private _getQueryString(data) {
+    const { gender, queryString, studentIds } = data;
     let where =
-      'a.isDeleted = :isDeleted AND a.accountType = :accountType AND c.teacherId = :teacherId';
+      'a.isDeleted = :isDeleted AND a.accountType = :accountType AND a.id IN(:studentIds) ';
     const params: any = {
-      teacherId,
       isDeleted: false,
       accountType: 'STUDENT',
+      studentIds,
     };
     if (!isNil(gender)) {
       where += ' AND p.gender = :gender';
@@ -78,14 +57,27 @@ export class GetStudentsService {
   }
 
   public async getStudentsByAdmin(query) {
-    const { where, params } = this._getQueryStringByAdmin(query);
+    const { classId, yearId, semesterId } = query;
+    const classSemester = await getRepository(ClassSemester).findOne({
+      semesterId,
+      yearId,
+      classId,
+      isDeleted: false,
+    });
+    if (isEmpty(classSemester)) {
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
+    }
+    const classStudents = await getRepository(ClassStudent).find({
+      isActive: true,
+      isDeleted: false,
+      classSemesterId: classSemester.id,
+    });
+    const studentIds = map(classStudents, 'studentId');
+    const { where, params } = this._getQueryString({ ...query, studentIds });
     const [skip, take] = getQueryPaging(query);
     const studentManager = await getManager()
       .createQueryBuilder(Account, 'a')
       .leftJoinAndSelect(Profile, 'p', 'a.id = p.accountId')
-      .leftJoin(ClassStudent, 'cs', 'cs.studentId = a.id')
-      .leftJoinAndSelect(Class, 'c', 'c.id = cs.classId')
-      .leftJoinAndSelect(Grade, 'g', 'g.id = c.gradeId')
       .where(where, params)
       .skip(skip)
       .take(take)
@@ -103,18 +95,31 @@ export class GetStudentsService {
     return response(200, 'SUCCESSFULLY', { result, total });
   }
 
-  public async getStudentsByFormTeacher(query, accountId) {
-    const { where, params } = this._getQueryStringByFormTeacher({
-      ...query,
+  public async getStudentsByFormTeacher(query: GetStudentsQueryDTO, accountId) {
+    const { yearId, semesterId } = query;
+    const classSemester = await getRepository(ClassSemester).findOne({
+      semesterId,
+      yearId,
       teacherId: accountId,
+      isDeleted: false,
+    });
+    if (isEmpty(classSemester)) {
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
+    }
+    const classStudents = await getRepository(ClassStudent).find({
+      isActive: true,
+      isDeleted: false,
+      classSemesterId: classSemester.id,
+    });
+    const studentIds = map(classStudents, 'studentId');
+    const { where, params } = this._getQueryString({
+      ...query,
+      studentIds,
     });
     const [skip, take] = getQueryPaging(query);
     const studentManager = await getManager()
       .createQueryBuilder(Account, 'a')
       .leftJoinAndSelect(Profile, 'p', 'a.id = p.accountId')
-      .leftJoin(ClassStudent, 'cs', 'cs.studentId = a.id')
-      .leftJoinAndSelect(Class, 'c', 'c.id = cs.classId')
-      .leftJoinAndSelect(Grade, 'g', 'g.id = c.gradeId')
       .where(where, params)
       .skip(skip)
       .take(take)

@@ -2,18 +2,34 @@ import { Injectable } from '@nestjs/common';
 import { ClassSubject } from 'libs/entities/class-subject.entity';
 import { In, getRepository } from 'typeorm';
 import { map, omitBy, isNil } from 'lodash';
-import { Subject } from 'libs/entities';
+import { Class, Subject } from 'libs/entities';
 import { response } from 'libs/utils';
+import { GetSubjectsQueryDTO } from 'types';
+import { ClassSemester } from 'libs/entities/class-semester.entity';
 
 @Injectable()
 export class GetSubjectsByAccountTypeService {
-  public async getSubjectsByAccountType(query, accountType, accountId) {
-    const { classId, semesterId, gradeId } = query;
-    const conditions = {
+  public async getSubjectsByAccountType(
+    query: GetSubjectsQueryDTO,
+    accountType,
+    accountId,
+  ) {
+    const { yearId, semesterId, gradeId } = query;
+    const classes = await getRepository(Class).find({
       isDeleted: false,
-      classId: classId && classId,
-      gradeId: gradeId && gradeId,
-      semesterId: semesterId && semesterId,
+      gradeId,
+    });
+    const classIds: number[] = map(classes, 'id');
+    const classSemesters = await getRepository(ClassSemester).find({
+      isDeleted: false,
+      yearId,
+      semesterId,
+      classId: In(classIds),
+    });
+    const classSemesterIds = map(classSemesters, 'id');
+    const conditions = {
+      classSemesterId: In(classSemesterIds),
+      isDeleted: false,
     };
     if (['TEACHER', 'FORM_TEACHER'].includes(accountType)) {
       Object.assign(conditions, {

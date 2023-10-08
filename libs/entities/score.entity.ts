@@ -72,6 +72,14 @@ export class Score {
   })
   endtermTestScore: string | null;
 
+  @Column('decimal', {
+    name: 'average_score',
+    nullable: true,
+    precision: 19,
+    scale: 1,
+  })
+  averageScore: string | null;
+
   @Column('text', { name: 'review', nullable: true })
   review: string | null;
 }

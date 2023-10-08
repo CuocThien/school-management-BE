@@ -17,6 +17,7 @@ import { ClassModule } from './class/class.module';
 import { StudentModule } from './student/student.module';
 import { SubjectModule } from './subject/subject.module';
 import { SemesterModule } from './semester/semester.module';
+import { YearModule } from './year/year.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { SemesterModule } from './semester/semester.module';
     StudentModule,
     SubjectModule,
     SemesterModule,
+    YearModule,
   ],
   controllers: [AppController],
   providers: [

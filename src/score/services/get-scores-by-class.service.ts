@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { isEmpty, omitBy, isNil, size, keyBy } from 'lodash';
-import { ClassSubject, Profile, Score, ScoreAverage } from 'libs/entities';
+import { isEmpty, omitBy, isNil, size } from 'lodash';
+import { ClassSubject, Profile, Score } from 'libs/entities';
 import { getQueryPaging, response } from 'libs/utils';
 import { getManager, getRepository } from 'typeorm';
+import { ClassSemester } from 'libs/entities/class-semester.entity';
 
 @Injectable()
 export class GetScoresByClassAndSubjectService {
-  private _parseScore(raws, objScoreAvg) {
+  private _parseScore(raws) {
     const result = raws.map((raw) => {
       const studentId = raw['s_student_id'];
-      const avgScore = objScoreAvg[studentId] || {};
       const score = {
         miniTest1Score: raw['s_mini_test_1_score'],
         miniTest2Score: raw['s_mini_test_2_score'],
@@ -31,7 +31,7 @@ export class GetScoresByClassAndSubjectService {
         deletedBy: raw['s_deleted_by'],
         review: raw['s_review'],
         fullName: raw['p_full_name'],
-        averageScore: avgScore?.score || null,
+        averageScore: raw['s_average_score'],
         isEnableCalAvgScore,
         ...score,
       };
@@ -40,15 +40,23 @@ export class GetScoresByClassAndSubjectService {
   }
 
   public async getScoresByClassAndSubject(payload) {
-    const { classId, subjectId, semesterId } = payload;
-    const classSubject = await getRepository(ClassSubject).findOne({
-      semesterId,
+    const { classId, subjectId, semesterId, yearId } = payload;
+    const classSemester = await getRepository(ClassSemester).findOne({
+      isDeleted: false,
       classId,
+      yearId,
+      semesterId,
+    });
+    if (isEmpty(classSemester)) {
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
+    }
+    const classSubject = await getRepository(ClassSubject).findOne({
+      classSemesterId: classSemester.id,
       subjectId,
       isDeleted: false,
     });
     if (isEmpty(classSubject)) {
-      return response(404, 'DATA_NOT_FOUND');
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
     }
     const [skip, take] = getQueryPaging(payload);
     const scoreManager = await getManager()
@@ -61,16 +69,11 @@ export class GetScoresByClassAndSubjectService {
       .skip(skip)
       .take(take)
       .orderBy('p.fullName', 'DESC');
-    const [scoresRaw, total, scoreAvg] = await Promise.all([
+    const [scoresRaw, total] = await Promise.all([
       scoreManager.getRawMany(),
       scoreManager.getCount(),
-      getRepository(ScoreAverage).find({
-        isDeleted: false,
-        classSubjectId: classSubject.id,
-      }),
     ]);
-    const objScoreAvg = keyBy(scoreAvg, 'studentId');
-    const result = this._parseScore(scoresRaw, objScoreAvg);
+    const result = this._parseScore(scoresRaw);
     return response(200, 'SUCCESSFULLY', { result, total });
   }
 }

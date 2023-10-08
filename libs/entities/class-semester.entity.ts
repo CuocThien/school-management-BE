@@ -20,12 +20,6 @@ export class ClassSemester {
   @Column('int', { name: 'teacher_id', nullable: true })
   teacherId: number | null;
 
-  @Column('tinyint', {
-    name: 'is_active',
-    width: 1,
-  })
-  isActive: boolean;
-
   @Column('datetime', { name: 'created_at', nullable: true })
   createdAt: Date | null;
 

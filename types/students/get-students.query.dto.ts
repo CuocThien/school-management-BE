@@ -11,10 +11,14 @@ export class GetStudentsQueryDTO extends PagingQueryDTO {
   queryString: string;
 
   @ApiProperty({ example: null, required: false })
-  @ValidateIf(ifExistedValue)
   @Transform(transformStringToNumber)
   @IsNumber()
-  gradeId: number;
+  yearId: number;
+
+  @ApiProperty({ example: null, required: false })
+  @Transform(transformStringToNumber)
+  @IsNumber()
+  semesterId: number;
 
   @ApiProperty({ example: null, required: false })
   @ValidateIf(ifExistedValue)

@@ -8,6 +8,12 @@ export class GetSubjectsQueryDTO {
   @ValidateIf(ifExistedValue)
   @Transform(transformStringToNumber)
   @IsNumber()
+  yearId: number;
+
+  @ApiProperty({ example: null, required: false })
+  @ValidateIf(ifExistedValue)
+  @Transform(transformStringToNumber)
+  @IsNumber()
   semesterId: number;
 
   @ApiProperty({ example: null, required: false })
@@ -15,10 +21,4 @@ export class GetSubjectsQueryDTO {
   @Transform(transformStringToNumber)
   @IsNumber()
   gradeId: number;
-
-  @ApiProperty({ example: null, required: false })
-  @ValidateIf(ifExistedValue)
-  @Transform(transformStringToNumber)
-  @IsNumber()
-  classId: number;
 }

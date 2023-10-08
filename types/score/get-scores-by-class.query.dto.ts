@@ -9,5 +9,11 @@ export class GetScoresByClassQueryDTO extends PagingQueryDTO {
   @ValidateIf(ifExistedValue)
   @Transform(transformStringToNumber)
   @IsNumber()
+  yearId: number;
+
+  @ApiProperty({ example: null, required: false })
+  @ValidateIf(ifExistedValue)
+  @Transform(transformStringToNumber)
+  @IsNumber()
   semesterId: number;
 }

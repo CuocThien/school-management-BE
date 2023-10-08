@@ -4,7 +4,6 @@ import {
   CreateScoreService,
   UpdateScoreService,
   GetScoresByClassAndSubjectService,
-  CreateScoreAverageService,
 } from './services';
 
 @Module({
@@ -13,7 +12,6 @@ import {
     CreateScoreService,
     UpdateScoreService,
     GetScoresByClassAndSubjectService,
-    CreateScoreAverageService,
   ],
 })
 export class ScoreModule {}

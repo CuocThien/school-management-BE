@@ -3,6 +3,7 @@ import { Account, Class, ClassStudent, Profile } from 'libs/entities';
 import { response } from 'libs/utils';
 import { getRepository } from 'typeorm';
 import { isEmpty } from 'lodash';
+import { ClassSemester } from 'libs/entities/class-semester.entity';
 
 @Injectable()
 export class GetStudentService {
@@ -18,6 +19,7 @@ export class GetStudentService {
       }),
       getRepository(ClassStudent).findOne({
         studentId: accountId,
+        isActive: true,
         isDeleted: false,
       }),
     ]);
@@ -26,9 +28,12 @@ export class GetStudentService {
     }
     const validClassInfo = {};
     if (!isEmpty(classStudent)) {
-      const { classId } = classStudent;
+      const { classSemesterId } = classStudent;
+      const classSemester = await getRepository(ClassSemester).findOne({
+        id: classSemesterId,
+      });
       const classInfo = await getRepository(Class).findOne({
-        id: classId,
+        id: classSemester.classId,
         isDeleted: false,
       });
       Object.assign(validClassInfo, {

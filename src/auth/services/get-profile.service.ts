@@ -25,6 +25,7 @@ export class GetProfileService {
       'F_MARKETING',
       'F_REPORT',
       'F_SETTING',
+      account.accountType,
     ];
     return response(200, 'SUCCESSFULLY', {
       ...profile,
