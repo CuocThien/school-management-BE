@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Account, ClassStudent, Profile } from 'libs/entities';
+import { Account, Class, ClassStudent, Grade, Profile } from 'libs/entities';
 import { getQueryPaging, response } from 'libs/utils';
-import { In, getManager, getRepository } from 'typeorm';
-import { keyBy, map, isEmpty, isNil } from 'lodash';
+import { getManager, getRepository } from 'typeorm';
+import { map, isEmpty, isNil } from 'lodash';
 import { GetStudentsQueryDTO } from 'types';
 import { ClassSemester } from 'libs/entities/class-semester.entity';
 
@@ -28,10 +28,8 @@ export class GetStudentsService {
     return { where, params };
   }
 
-  private _parseDataRaw(raws, teachers) {
+  private _parseDataRaw(raws, addingData) {
     const result = raws.map((raw) => {
-      const teacherId = raw['c_teacher_id'];
-      const teacher = teachers[teacherId] || {};
       const gender = raw['p_gender'] ? 'Nam' : 'Nữ';
       return {
         id: raw['a_id'],
@@ -45,12 +43,7 @@ export class GetStudentsService {
         gender,
         parentId: raw['p_parent_id'],
         avatar: raw['p_avatar'],
-        classId: raw['c_id'],
-        className: raw['c_name'],
-        teacherId: raw['c_teacher_id'],
-        teacherName: teacher.fullName || '',
-        gradeId: raw['g_name_id'],
-        gradeName: raw['g_name'],
+        ...addingData,
       };
     });
     return result;
@@ -67,11 +60,22 @@ export class GetStudentsService {
     if (isEmpty(classSemester)) {
       return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
     }
-    const classStudents = await getRepository(ClassStudent).find({
-      isActive: true,
-      isDeleted: false,
-      classSemesterId: classSemester.id,
-    });
+    const [classStudents, classInfo, profile] = await Promise.all([
+      getRepository(ClassStudent).find({
+        isActive: true,
+        isDeleted: false,
+        classSemesterId: classSemester.id,
+      }),
+      getRepository(Class).findOne({
+        id: classSemester.classId,
+      }),
+      getRepository(Profile).findOne({
+        accountId: classSemester.teacherId,
+      }),
+    ]);
+    if (isEmpty(classStudents)) {
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
+    }
     const studentIds = map(classStudents, 'studentId');
     const { where, params } = this._getQueryString({ ...query, studentIds });
     const [skip, take] = getQueryPaging(query);
@@ -82,16 +86,22 @@ export class GetStudentsService {
       .skip(skip)
       .take(take)
       .orderBy('p.fullName', 'DESC');
-    const [studentsRaw, total] = await Promise.all([
+    const [studentsRaw, total, grade] = await Promise.all([
       studentManager.getRawMany(),
       studentManager.getCount(),
+      getRepository(Grade).findOne({
+        id: classInfo.gradeId,
+      }),
     ]);
-    const teacherIds = map(studentsRaw, 'c_teacher_id');
-    const teachers = await getRepository(Profile).find({
-      where: { accountId: In(teacherIds) },
-    });
-    const objTeacher = keyBy(teachers, 'accountId');
-    const result = this._parseDataRaw(studentsRaw, objTeacher);
+    const addingData = {
+      classId: classInfo?.id,
+      className: classInfo?.name,
+      teacherId: profile?.accountId,
+      teacherName: profile?.fullName,
+      gradeId: grade?.id,
+      gradeName: grade?.id,
+    };
+    const result = this._parseDataRaw(studentsRaw, addingData);
     return response(200, 'SUCCESSFULLY', { result, total });
   }
 
@@ -106,11 +116,22 @@ export class GetStudentsService {
     if (isEmpty(classSemester)) {
       return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
     }
-    const classStudents = await getRepository(ClassStudent).find({
-      isActive: true,
-      isDeleted: false,
-      classSemesterId: classSemester.id,
-    });
+    const [classStudents, profile, classInfo] = await Promise.all([
+      getRepository(ClassStudent).find({
+        isActive: true,
+        isDeleted: false,
+        classSemesterId: classSemester.id,
+      }),
+      getRepository(Profile).findOne({
+        accountId,
+      }),
+      getRepository(Class).findOne({
+        id: classSemester.classId,
+      }),
+    ]);
+    if (isEmpty(classStudents)) {
+      return response(200, 'SUCCESSFULLY', { result: [], total: 0 });
+    }
     const studentIds = map(classStudents, 'studentId');
     const { where, params } = this._getQueryString({
       ...query,
@@ -124,16 +145,22 @@ export class GetStudentsService {
       .skip(skip)
       .take(take)
       .orderBy('p.fullName', 'DESC');
-    const [studentsRaw, total] = await Promise.all([
+    const [studentsRaw, total, grade] = await Promise.all([
       studentManager.getRawMany(),
       studentManager.getCount(),
+      getRepository(Grade).findOne({
+        id: classInfo.gradeId,
+      }),
     ]);
-    const teacherIds = map(studentsRaw, 'c_teacher_id');
-    const teachers = await getRepository(Profile).find({
-      where: { accountId: In(teacherIds) },
-    });
-    const objTeacher = keyBy(teachers, 'accountId');
-    const result = this._parseDataRaw(studentsRaw, objTeacher);
+    const addingData = {
+      classId: classInfo?.id,
+      className: classInfo?.name,
+      teacherId: accountId,
+      teacherName: profile?.fullName,
+      gradeId: grade?.id,
+      gradeName: grade?.id,
+    };
+    const result = this._parseDataRaw(studentsRaw, addingData);
     return response(200, 'SUCCESSFULLY', { result, total });
   }
 }
