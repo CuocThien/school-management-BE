@@ -14,13 +14,17 @@ import {
   CreateScoreService,
   GetScoresByClassAndSubjectService,
   UpdateScoreService,
+  GetScoreFinalService,
+  GetStudyProcessService,
 } from './services';
 import { HttpAccountId } from 'libs/utils';
 import {
   CreateScoreBodyDTO,
   GetScoresByClassQueryDTO,
+  GetStudyProcessQueryDTO,
   ScoreParamDTO,
   ScoresParamDTO,
+  StudentParamDTO,
 } from 'types/score';
 
 @Controller('')
@@ -32,6 +36,8 @@ export class ScoreController {
     private readonly createScoreService: CreateScoreService,
     private readonly updateScoreService: UpdateScoreService,
     private readonly getScoresByClassAndSubjectService: GetScoresByClassAndSubjectService,
+    private readonly getStudyProcessService: GetStudyProcessService,
+    private readonly getScoreFinalService: GetScoreFinalService,
   ) {}
   @Post('score')
   createScore(@Body() body: CreateScoreBodyDTO, @HttpAccountId() accountId) {
@@ -55,6 +61,24 @@ export class ScoreController {
     return this.getScoresByClassAndSubjectService.getScoresByClassAndSubject({
       ...params,
       ...query,
+    });
+  }
+
+  @Get('study-process/:studentId')
+  getStudyProcess(
+    @Param() { studentId }: StudentParamDTO,
+    @Query() query: GetStudyProcessQueryDTO,
+  ) {
+    return this.getStudyProcessService.getStudyProcess({
+      studentId,
+      ...query,
+    });
+  }
+
+  @Get('score-final/:studentId')
+  getScoreFinal(@Param() { studentId }: StudentParamDTO) {
+    return this.getScoreFinalService.getScoreFinal({
+      studentId,
     });
   }
 }
