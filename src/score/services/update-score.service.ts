@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { isEmpty, map, compact, isEqual, sum, parseInt } from 'lodash';
+import { isEmpty, map, compact, isEqual, mean } from 'lodash';
 import {
   ClassStudent,
   ClassSubject,
@@ -99,7 +99,7 @@ export class UpdateScoreService {
       ]);
       return response(200, 'SUCCESSFULLY', Object.assign(score, body));
     }
-    const newAverageScore = Number(sum(averageScores) / 13);
+    const newAverageScore = Number(mean(averageScores));
     await getRepository(ScoreSemester).update(
       {
         classStudentId: classStudent.id,
@@ -124,7 +124,7 @@ export class UpdateScoreService {
       Number(itm),
     );
     if (isEqual(semesterAverageScores.length, 2)) {
-      const newAverageScore = Number(sum(semesterAverageScores) / 2);
+      const newAverageScore = Number(mean(semesterAverageScores));
       await getRepository(ScoreFinal).update(
         {
           studentId: score.studentId,
